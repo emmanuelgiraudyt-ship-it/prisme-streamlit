@@ -22,6 +22,7 @@ def render() -> None:
             f"Rédige un document de type « {fmt} », ton {ton.lower()}, destiné à l'audience « {audience} », "
             f"sur le sujet suivant : {sujet}. Respecte les codes du genre et les usages institutionnels français.",
             module="Communication",
+            demo=f"communication:{fmt}",
         )
         if res:
             st.session_state["comm_out"] = res.text

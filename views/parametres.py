@@ -36,7 +36,7 @@ def render() -> None:
         st.markdown(f"**{row['nom']}** : {etat} ({row['detail']})")
     col1, col2, col3 = st.columns(3)
     if col1.button("Tester le modèle"):
-        res = ui.ask("Réponds uniquement : OK.", module="Test", max_tokens=16)
+        res = ui.ask("Réponds uniquement : OK.", module="Test", max_tokens=16, demo="test")
         if res:
             st.success(f"Modèle opérationnel : {res.text[:60]}")
     if col2.button("Tester Notion", disabled=not exports.notion_configured()):

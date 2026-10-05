@@ -66,6 +66,7 @@ def render() -> None:
             "prématurée.",
             module="Crise",
             max_tokens=700,
+            demo="crise",
         )
         if res:
             st.session_state["crise_out"] = res.text

@@ -67,6 +67,8 @@ def ask(
     history: list[dict] | None = None,
     system: str | None = None,
     max_tokens: int | None = None,
+    demo: str | None = None,
+    demo_text: str | None = None,
 ) -> llm.LLMResult | None:
     c = ctx()
     with st.spinner("Génération en cours…"):
@@ -81,6 +83,8 @@ def ask(
                 module=module,
                 tenant=c.tenant,
                 storage=c.storage,
+                demo_key=demo,
+                demo_text=demo_text,
             )
         except llm.LLMError as exc:
             st.error(str(exc))
@@ -174,6 +178,7 @@ def export_bar(key: str, title: str, text: str, module: str, *, archive: bool = 
                 "titre, accroche, hiérarchie des textes, palette (fond sombre, accent doré), format recommandé.\n\n"
                 + text,
                 module="Canva",
+                demo="canva",
             )
             if res:
                 st.session_state[f"{key}_canva_out"] = res.text
@@ -198,7 +203,13 @@ def integration_rows() -> list[dict]:
         if provider == "anthropic"
         else (config.secret("PRISME_OPENAI_API_KEY") or config.secret("MISTRAL_API_KEY"))
     )
+    demo_row = (
+        [{"nom": "Mode démonstration", "actif": True, "detail": "réponses pré-rédigées, aucun modèle appelé"}]
+        if config.flag("PRISME_DEMO_MODE")
+        else []
+    )
     return [
+        *demo_row,
         {"nom": f"Modèle ({provider})", "actif": key_ok, "detail": config.model()},
         {"nom": "Recherche web", "actif": key_ok and provider == "anthropic", "detail": "Outil natif Anthropic"},
         {"nom": "Notion", "actif": exports.notion_configured(), "detail": "Dépôt de pages"},

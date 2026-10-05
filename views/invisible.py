@@ -29,7 +29,7 @@ def render() -> None:
         with st.chat_message("user"):
             st.markdown(question)
         with st.chat_message("assistant"):
-            res = ui.ask(enveloppe, module="Invisible", history=history)
+            res = ui.ask(enveloppe, module="Invisible", history=history, demo="invisible")
             if res:
                 st.markdown(res.text)
         if res:

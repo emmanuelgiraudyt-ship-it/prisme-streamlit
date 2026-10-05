@@ -1,4 +1,4 @@
-# PRISME v5.0
+# PRISME v5.1
 
 **Plateforme de Renseignement Institutionnel et Stratégique pour le Management de l'Élu**, version Streamlit
 (édité par EG Conseil & Lobbying). Elle reprend les sept modules de la version React 4.0 et en ajoute trois :
@@ -21,6 +21,14 @@ tableau de bord, bibliothèque, paramètres et connexions.
 
 Chaque production s'exporte en Word (.docx), Markdown, brouillon .eml, et, si configuré, vers Notion, Google Drive
 et Gmail (brouillon uniquement : aucun courriel n'est jamais envoyé).
+
+## Mode démonstration (sans clé API)
+
+Avec `PRISME_DEMO_MODE=true` dans les secrets, aucun modèle n'est appelé : chaque génération renvoie un exemple
+pré-rédigé et fictif, précédé d'une mention explicite. Tout le parcours reste utilisable (exports Word, Markdown,
+brouillon, archivage, bibliothèque, main courante, paramètres) pour évaluer l'interface et les enchaînements.
+Ce mode ne dit rien de la qualité réelle des textes qu'un modèle produirait. Il se désactive en supprimant la
+variable et en renseignant une clé.
 
 ## Démarrage local
 

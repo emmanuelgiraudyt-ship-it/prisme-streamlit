@@ -99,7 +99,7 @@ def render() -> None:
             + "\nFormat : quatre paragraphes courts : équilibre politique, dossiers à enjeu, points de vigilance, "
             "recommandation d'action pour la semaine."
         )
-        res = ui.ask(prompt, module="Cartographie", web=enrichir)
+        res = ui.ask(prompt, module="Cartographie", web=enrichir, demo="cartographie")
         if res:
             st.session_state["carto_out"] = res.with_sources()
     out = st.session_state.get("carto_out", "")

@@ -7,7 +7,7 @@ import os
 from collections.abc import Mapping
 from pathlib import Path
 
-APP_VERSION = "5.0.0"
+APP_VERSION = "5.1.0"
 DEFAULT_MODEL = "claude-sonnet-4-6"
 DEFAULT_MAX_TOKENS = 4096
 

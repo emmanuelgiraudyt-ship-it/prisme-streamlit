@@ -43,7 +43,7 @@ def _classify(events: list[dict]) -> None:
         st.warning("Aucun événement exploitable sur la période.")
         return
     listing = "\n".join(f"{e['start']} | {e['title']} | {e['minutes']} min" for e in events[:150])
-    res = ui.ask(CLASSIFICATION.format(events=listing), module="Agenda", max_tokens=600)
+    res = ui.ask(CLASSIFICATION.format(events=listing), module="Agenda", max_tokens=600, demo="agenda")
     if not res:
         return
     try:

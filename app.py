@@ -2,7 +2,7 @@
 
 import streamlit as st
 
-from prisme import APP_VERSION, auth, ui
+from prisme import APP_VERSION, auth, config, ui
 
 st.set_page_config(page_title="PRISME", layout="wide", initial_sidebar_state="expanded")
 ui.inject_css()
@@ -53,6 +53,10 @@ with st.sidebar:
         auth.logout()
         st.rerun()
 
+if config.flag("PRISME_DEMO_MODE"):
+    st.info(
+        "Mode démonstration : les textes affichés sont des exemples pré-rédigés et fictifs, aucun modèle n'est appelé."
+    )
 navigation.run()
 st.divider()
 st.markdown(

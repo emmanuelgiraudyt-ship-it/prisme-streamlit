@@ -23,6 +23,7 @@ def render() -> None:
             "calendrier pour une note d'arbitrage ; objet, état des lieux, analyse, propositions, échéancier "
             "pour une note de synthèse). Concision, hiérarchisation, actionnabilité.",
             module="Rédaction",
+            demo=f"redaction:{typo}",
         )
         if res:
             st.session_state["red_out"] = res.text
@@ -32,6 +33,7 @@ def render() -> None:
             "Révise et améliore le texte suivant (clarté, registre institutionnel, orthographe, ponctuation "
             "française classique) sans en changer le fond :\n\n" + out,
             module="Rédaction",
+            demo_text=out,
         )
         if res:
             st.session_state["red_out"] = out = res.text

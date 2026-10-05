@@ -51,7 +51,13 @@ def render() -> None:
                 "Travaille sans recherche web, à partir du droit et des mécanismes institutionnels stables, "
                 "et signale toute donnée susceptible d'avoir évolué."
             )
-        res = ui.ask(prompt, module="Veille", web=web, domains=domaines if (web and restreint and domaines) else None)
+        res = ui.ask(
+            prompt,
+            module="Veille",
+            demo="veille",
+            web=web,
+            domains=domaines if (web and restreint and domaines) else None,
+        )
         if res:
             st.session_state["veille_out"] = res.with_sources()
     out = st.session_state.get("veille_out", "")

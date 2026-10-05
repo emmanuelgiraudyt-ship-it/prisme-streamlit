@@ -37,7 +37,10 @@ def _anthropic_client():
         return _client_factory()
     key = config.secret("ANTHROPIC_API_KEY")
     if not key:
-        raise LLMError("Clé API absente : renseignez ANTHROPIC_API_KEY dans les secrets de l'application.")
+        raise LLMError(
+            "Clé API absente : renseignez ANTHROPIC_API_KEY dans les secrets de l'application "
+            "(ou activez PRISME_DEMO_MODE=true pour une démonstration sans clé)."
+        )
     import anthropic
 
     return anthropic.Anthropic(api_key=key, max_retries=2, timeout=180.0)
@@ -175,19 +178,28 @@ def generate(
     module: str = "general",
     tenant: str | None = None,
     storage=None,
+    demo_key: str | None = None,
+    demo_text: str | None = None,
 ) -> LLMResult:
     if tenant and storage is not None and storage.calls_today(tenant) >= config.daily_limit():
         raise LLMError(
             f"Plafond quotidien de {config.daily_limit()} générations atteint pour cet espace. Il se renouvelle demain."
         )
-    messages = [*(history or []), {"role": "user", "content": prompt}]
-    max_tokens = max_tokens or config.DEFAULT_MAX_TOKENS
-    if config.provider() == "anthropic":
-        result = _anthropic_generate(messages, system, max_tokens, web_search, allowed_domains)
+    if config.flag("PRISME_DEMO_MODE"):
+        from . import demo
+
+        result = LLMResult(demo.respond(demo_key, history, demo_text), notice=demo.NOTICE)
+        model_label = "demo"
     else:
-        result = _openai_compat_generate(messages, system, max_tokens, web_search)
+        messages = [*(history or []), {"role": "user", "content": prompt}]
+        max_tokens = max_tokens or config.DEFAULT_MAX_TOKENS
+        if config.provider() == "anthropic":
+            result = _anthropic_generate(messages, system, max_tokens, web_search, allowed_domains)
+        else:
+            result = _openai_compat_generate(messages, system, max_tokens, web_search)
+        model_label = config.model()
     if tenant and storage is not None:
-        storage.log_usage(tenant, module, config.model(), result.input_tokens, result.output_tokens, result.searches)
+        storage.log_usage(tenant, module, model_label, result.input_tokens, result.output_tokens, result.searches)
     return result
 
 
